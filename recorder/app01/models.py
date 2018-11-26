@@ -108,13 +108,14 @@ class FileStore(models.Model):
     file_format_choices=((0,'xls'),(1,'csv'),(2,'json'),(3,'txt'))
     file_format=models.SmallIntegerField(default=0,verbose_name='文件格式')
     def __str__(self):
-        return '%s%s.%s'%(self.file_addre,self.file_time,self.file_format)
+        return self.file_time
 
 class Detailed(models.Model):
     '''每个用户考勤详细情况'''
-    user=models.ForeignKey('UserProfile',on_delete='')
-    file_stores_id=models.ForeignKey('FileStore',on_delete='')
-    data=models.CharField(max_length=32)
+    user=models.CharField(max_length=64)
+    file_stores_id=models.ForeignKey('FileStore',on_delete='CASCADE')
+    data=models.CharField(max_length=32,verbose_name='数据日期')
+    detai=models.CharField(max_length=64,verbose_name='详细')
     def __str__(self):
         return self.user
 
