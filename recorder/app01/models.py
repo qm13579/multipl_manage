@@ -99,6 +99,8 @@ class Standard(models.Model):
     noon=models.CharField(max_length=32,verbose_name='上午下班')
     afternoon=models.CharField(max_length=32,verbose_name='下午上班')
     night=models.CharField(max_length=32,verbose_name='下午下班')
+    go_to_work_time_error=models.CharField(max_length=32,verbose_name='上班时间误差')
+    go_off_work_time_error=models.CharField(max_length=32,verbose_name='下班时间误差')
 
 
 class FileStore(models.Model):
@@ -107,15 +109,16 @@ class FileStore(models.Model):
     file_time=models.CharField(max_length=32,verbose_name='文件日期')
     file_format_choices=((0,'xls'),(1,'csv'),(2,'json'),(3,'txt'))
     file_format=models.SmallIntegerField(default=0,verbose_name='文件格式')
+    file_data_summary=models.BooleanField(default=False,verbose_name='数据汇总')
     def __str__(self):
         return self.file_time
 
 class Detailed(models.Model):
     '''每个用户考勤详细情况'''
     user=models.CharField(max_length=64)
-    file_stores_id=models.ForeignKey('FileStore',on_delete='CASCADE')
+    file_stores_id=models.ForeignKey('FileStore',on_delete=models.CASCADE)
     data=models.CharField(max_length=32,verbose_name='数据日期')
-    detai=models.CharField(max_length=64,verbose_name='详细')
+    detail=models.CharField(max_length=64,verbose_name='详细')
     def __str__(self):
         return self.user
 
@@ -127,7 +130,6 @@ class Summary(models.Model):
     lack=models.SmallIntegerField(verbose_name='缺少次数')
     explain=models.TextField(verbose_name='解释说明')
     fine=models.CharField(max_length=64,verbose_name='罚金')
-
     def __str__(self):
         return '%s %s'%(self.user,self.fine)
 class Approval(models.Model):

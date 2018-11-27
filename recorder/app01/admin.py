@@ -6,3 +6,4 @@ from app01 import models
 admin.site.register(models.UserProfile)
 admin.site.register(models.DepartmentGroup)
 admin.site.register(models.FileStore)
+admin.site.register(models.Standard)

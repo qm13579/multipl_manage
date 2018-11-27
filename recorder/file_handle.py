@@ -6,15 +6,9 @@ import sys, os
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "recorder.settings")
 import django
-
 django.setup()
+
 now_time=time.time()
-# df=pd.read_excel('app01/file/2018-10.xls',encoding='utf-8',skip_rows=1,header=3,index_col=False)
-# print(df.index.values)
-# print(df.ix[4][9])
-print('======')
-# print(df)
-# print(df.ix[0])
 
 def handle(data,df):
     '''处理每一个变量数据'''
@@ -24,8 +18,6 @@ def handle(data,df):
     for val,index in zip(vals,columns):
         key={}
         if str(val) != 'nan':
-            # key['index']='|'.join(re.findall('\d\d:\d\d',val))
-            # key['val']=val
             key['index']=index
             key['val']='|'.join(re.findall('\d\d:\d\d',val))
         else:
@@ -48,8 +40,6 @@ def file_data(file):
             info_list.append(info_dict)
     return info_list
 
-
-import os
 #打开文件
 #文件下的所有文件
 def file_check():
