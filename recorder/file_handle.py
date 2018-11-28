@@ -78,7 +78,7 @@ def mode_store():
         task_log=[]
         for item in file_dict['val']:
             for j in item['val']:
-                task_log.append(models.Detailed( user=item['name'],file_stores_id_id=obj.id,data=j['index'],detai=j['val']))
+                task_log.append(models.Detailed( user=item['name'],file_stores_id_id=obj.id,data=j['index'],detail=j['val']))
         models.Detailed.objects.bulk_create(task_log)
         print('数据已入库')
     else:

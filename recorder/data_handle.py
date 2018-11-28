@@ -11,6 +11,7 @@ class DataTatol(object):
         self.handle=[]
     def data_summary_judge(self):
         '''判断数据是否进行汇总处理'''
+        #可能存在多个数据
         wait_handles=models.FileStore.objects.filter(file_data_summary=False)
         if wait_handles:
             handle_dict={}
@@ -26,13 +27,31 @@ class DataTatol(object):
                 print (query)
                 wait_handle_data=models.Detailed.objects.filter(file_stores_id_id=query['id'])
                 obj=HandelDate(wait_handle_data)
-                obj.handle()
+                data=obj.handle()
+                return data,query['query']
         else:
             print ('无数据汇总')
+    def model_store(self):
+        data,query=self.data_summary_handle()
+        print(data)
+        summary_list = []
+        for dict_key_user in data :
+            user=dict_key_user['user']
+            count_str=None
+            val_str=None
+            count_str='Blank/Lack:%s/%s'%(dict_key_user['val']['blank']['count'],dict_key_user['val']['lack']['count'])
+            val_str='Blank/Lack:%s/%s'%(';'.join(dict_key_user['val']['blank']['val']),dict_key_user['val']['lack']['val'])
+            summary_list.append(models.Summary(user=user,
+                                               file_stores_id_id=query.id,
+                                               lack_detail=val_str,
+                                               lack_count=count_str,
+                                               ))
+        models.Summary.objects.bulk_create(summary_list)
+        print ('数据汇总完成')
 
 class HandelDate(object):
     def __init__(self,data):
-        self.data = data
+        self.data = data#quertSet
         self.model = models.Standard.objects.all()
         self.cost = self.model.values('cost')[0]['cost']
         self.morning = int(''.join(self.model.values('morning')[0]['morning'].split(':')))
@@ -53,17 +72,16 @@ class HandelDate(object):
         info_lack_dict={}
         lack=0
         total={}
-        for query in self.data[:31]:
-            # print (query.detail,query.data,query.user)
+        last_user=list(self.data)[-1]
+        for query in self.data:
             #重置
             if info_user != query.user:
                 if info_blank:
                     #把None值进行字典化
                     info_blank_dict['val']=info_blank
                     info_blank_dict['count']=blank
-                    # self.info_summary_list.append(info_blank_dict)
                     #把缺失值进行字典化
-                    info_lack_dict['val']=info_lack
+                    info_lack_dict['val']=';'.join(info_lack)
                     info_lack_dict['count']=lack
                     self.info_summary_dict['blank']=info_blank_dict
                     self.info_summary_dict['lack']=info_lack_dict
@@ -80,6 +98,7 @@ class HandelDate(object):
                 total = {}
                 self.info_summary_dict={}
 
+            #判断值为nan还是字符串值
             if query.detail=='nan':
                 blank+=1
                 info_blank.append(query.data)
@@ -91,8 +110,20 @@ class HandelDate(object):
                     lack+=date_handel['count']
                     info_lack.append(query.data+'-'+'|'.join(date_handel['val']))
                     # print ('次数:',date_handel['count'],'时段:',date_handel['val'],'日期:',query.data)
-        # return {'user':'a','val':self.info_summary_list}
-        print (self.info_summary_list)
+        # 当前用户为最后一个用户
+        if info_blank:
+            # 把None值进行字典化
+            info_blank_dict['val'] = info_blank
+            info_blank_dict['count'] = blank
+            # 把缺失值进行字典化
+            info_lack_dict['val'] = ';'.join(info_lack)
+            info_lack_dict['count'] = lack
+            self.info_summary_dict['blank'] = info_blank_dict
+            self.info_summary_dict['lack'] = info_lack_dict
+            total['user'] = info_user
+            total['val'] = self.info_summary_dict
+            self.info_summary_list.append(total)
+        return self.info_summary_list
     def date_handle(self,query):
         '''日期处理'''
         # print (query.detail, query.data, query.user)
@@ -128,6 +159,7 @@ if __name__ == '__main__':
     import time
     now=time.time()
     obj = DataTatol()
-    obj.data_summary_handle()
+    obj.model_store()
     print (time.time()-now)
+
 #{user,xxx,val:[{blank:{blank:10,val:[]}}]}

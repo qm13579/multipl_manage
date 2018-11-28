@@ -124,14 +124,14 @@ class Detailed(models.Model):
 
 class Summary(models.Model):
     '''对考勤表进行汇总'''
-    user=models.ForeignKey('UserProfile',on_delete='')
-    file_stores_id=models.ForeignKey('FileStore',on_delete='')
-    date=models.DateTimeField(auto_now_add=True)
-    lack=models.SmallIntegerField(verbose_name='缺少次数')
-    explain=models.TextField(verbose_name='解释说明')
-    fine=models.CharField(max_length=64,verbose_name='罚金')
+    user = models.CharField(max_length=64)
+    file_stores_id=models.ForeignKey('FileStore',on_delete=models.CASCADE)
+    lack_detail=models.CharField(max_length=246,verbose_name='缺少详细说明')
+    lack_count=models.CharField(max_length=32,verbose_name='缺少次数')
+    fine=models.CharField(max_length=64,verbose_name='罚金',blank=True,null=True)
     def __str__(self):
-        return '%s %s'%(self.user,self.fine)
+        return self.user
+
 class Approval(models.Model):
     '''审批'''
     pass
