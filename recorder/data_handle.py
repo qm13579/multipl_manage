@@ -135,7 +135,7 @@ class HandelDate(object):
         time_list=query.detail.split('|')
         for i in time_list:
             time_int=int(''.join(i.split(':')))
-            if self.morning-self.go_to_work_time_error<time_int<self.morning:
+            if self.morning-self.go_to_work_time_error<=time_int<=self.morning:
                 morning=True
             elif self.noon<=time_int<self.noon+self.go_off_work_time_error:
                 noon=True
@@ -159,6 +159,7 @@ if __name__ == '__main__':
     import time
     now=time.time()
     obj = DataTatol()
+    # obj.data_summary_handle()
     obj.model_store()
     print (time.time()-now)
 

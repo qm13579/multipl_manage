@@ -8,7 +8,6 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "recorder.settings")
 import django
 django.setup()
 
-now_time=time.time()
 
 def handle(data,df):
     '''处理每一个变量数据'''
@@ -30,10 +29,14 @@ def file_data(file):
     '''读取文件,进行数据传递'''
     df=pd.read_excel('app01/file/%s.xls'%file,encoding='utf-8',skip_rows=1,header=3,index_col=False)
     info_list=[]
+    name_index=None
     for index in df.index:
         if index%2==0:
             info_dict={}
             info_dict['name']=df.ix[index][9]
+            if str(info_dict['name'])=='nan':
+                info_dict['name'] = df.ix[index][8]
+            # print(info_dict['name'])
         else:
             info_dict['val']=handle(df.ix[index],df)
         if info_dict.get('val'):
@@ -64,6 +67,7 @@ def file_check():
             file_store = {}
             file_store['val']=file_data(file)
             file_store['date']=file
+        print(file_store)
         return file_store
     return file_store
 def mode_store():
@@ -83,5 +87,7 @@ def mode_store():
         print('数据已入库')
     else:
         print('无新数据')
-mode_store()
-print(time.time()-now_time)
+if __name__ == '__main__':
+    now_time = time.time()
+    file_data('2018-11')
+    print(time.time() - now_time)

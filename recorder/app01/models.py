@@ -54,7 +54,7 @@ class UserProfile(AbstractBaseUser):
     is_staff = models.BooleanField(default=True)
 
     # host_to_remote_user=models.ManyToManyField('HostToRemoteUser')
-    department_groups=models.ForeignKey('DepartmentGroup',blank=True,null=True,on_delete='')
+    department_groups=models.ForeignKey('DepartmentGroup',blank=True,null=True,on_delete=models.CASCADE)
 
     objects = UserProfileManager()
 
@@ -87,7 +87,7 @@ class DepartmentGroup(models.Model):
     # department_choices=((0,'行领导'),(1,'办公室'),(2,'金融管理部'),(3,'国库会计部'))
     # department=models.SmallIntegerField(choices=department_choices,blank=True,null=True,verbose_name='部门')
     department=models.CharField(max_length=64,verbose_name='部门')
-    head=models.OneToOneField('UserProfile',blank=True,null=True,verbose_name='负责人',on_delete='')
+    head=models.OneToOneField('UserProfile',blank=True,null=True,verbose_name='负责人',on_delete=models.CASCADE)
 
     def __str__(self):
         return '%s'%self.department
