@@ -56,7 +56,8 @@ ROOT_URLCONF = 'recorder.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),
+                 os.path.join(BASE_DIR,'kingadmin/templates'),]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -106,6 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
+#使用自定义登录
 AUTH_USER_MODEL='app01.UserProfile'
 
 LANGUAGE_CODE = 'en-us'
@@ -123,3 +125,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS=(
+    os.path.join(BASE_DIR,'statics'),
+    os.path.join(BASE_DIR,'kingadmin/statics'),
+
+)
+LOGIN_URL='/login'

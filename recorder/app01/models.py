@@ -55,7 +55,7 @@ class UserProfile(AbstractBaseUser):
 
     # host_to_remote_user=models.ManyToManyField('HostToRemoteUser')
     department_groups=models.ForeignKey('DepartmentGroup',blank=True,null=True,on_delete=models.CASCADE)
-
+    role=models.ForeignKey('Role',blank=True,null=True,on_delete=models.CASCADE)
     objects = UserProfileManager()
 
     USERNAME_FIELD = 'email'
@@ -82,10 +82,14 @@ class UserProfile(AbstractBaseUser):
     def __str__(self):              # __unicode__ on Python 2
         return self.email
 
+class Role(models.Model):
+    name=models.CharField(max_length=64,unique=True)
+    menus=models.ManyToManyField('Menus',blank=True)
+    def __str__(self):
+        return self.name
+
 class DepartmentGroup(models.Model):
     '''部门分组'''
-    # department_choices=((0,'行领导'),(1,'办公室'),(2,'金融管理部'),(3,'国库会计部'))
-    # department=models.SmallIntegerField(choices=department_choices,blank=True,null=True,verbose_name='部门')
     department=models.CharField(max_length=64,verbose_name='部门')
     head=models.OneToOneField('UserProfile',blank=True,null=True,verbose_name='负责人',on_delete=models.CASCADE)
 
@@ -135,3 +139,14 @@ class Summary(models.Model):
 class Approval(models.Model):
     '''审批'''
     pass
+
+class Menus(models.Model):
+    '''动态菜单'''
+    name = models.CharField(max_length=32, verbose_name='菜单')
+    url_type_choices=((0,'absolute'),(1,'dynamic'))
+    url_type=models.SmallIntegerField(choices=url_type_choices,default=0)
+    url_name=models.CharField(max_length=32,verbose_name='url')
+    def __str__(self):
+        return self.name
+    class Meta:
+        unique_together=('name','url_name')

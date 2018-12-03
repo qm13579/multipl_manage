@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from app01 import models
-# Create your views here.
+#django 登录验证
+from django.contrib.auth.decorators import login_required
 
-# def file_data_store(request):
-#     models.FileStore.objects.all()
+
+@login_required
+def home(request):
+
+    return render(request,'home/home.html')

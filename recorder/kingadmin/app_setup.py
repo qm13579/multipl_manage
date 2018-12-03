@@ -3,12 +3,11 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "recorder.settings")
 
 from django.conf import settings
 
-for apps in settings.INSTALLED_APPS:
-    try:
-        print('%s.kingadmin'%apps)
-        mon=__import__('%s.kingadmin'%apps)
-    except Exception as e:
-        print(e)
+def kingadmin_auto_discover():
+    for apps in settings.INSTALLED_APPS:
+        try:
+            mon=__import__('%s.kingadmin'%apps)
+            print('%s.kingadmin'%apps)
+        except Exception as e:
+            pass
 
-# from kingadmin.sites import site
-# print(site.enble_admin)
