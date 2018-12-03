@@ -1,0 +1,4 @@
+
+
+class AdminBase(object):
+    pass
