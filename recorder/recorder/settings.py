@@ -25,7 +25,7 @@ SECRET_KEY = 'wxnu1_epx(y^*70qx-s^bp&y1%g7+#rr$x)snljxxq@xi495e2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0:8000','106.13.38.125']
 
 
 # Application definition
