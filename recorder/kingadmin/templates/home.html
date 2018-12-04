@@ -3,3 +3,19 @@
 {% block title %}
     <h1>APPS</h1>
 {% endblock %}
+
+{% block dashboard %}
+    {% for appname,val in class_admin.items %}
+        <h3>{{ appname }}</h3>
+    <table class="table table-striped">
+    <tbody>
+        {% for table in val %}
+        <tr>
+            <td><a href="{% url 'appname' appname table %}">{{ table }}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+    </table>
+    {% endfor %}
+{% endblock %}

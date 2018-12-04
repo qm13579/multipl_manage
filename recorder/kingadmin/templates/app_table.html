@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+{% block title %}
+    {{ app_name }}/{{ table_name }}
+{% endblock %}
+
+{% block dashboard %}
+
+    <table class="table table-striped">
+    <thead>
+        <tr>
+          <th>name</th>
+        </tr>
+    </thead>
+    {% for val in querset %}
+    <tbody>
+        <tr>
+            <td>{{ val }}</td>
+        </tr>
+    </tbody>
+    {% endfor %}
+    </table>
+
+{% endblock %}
