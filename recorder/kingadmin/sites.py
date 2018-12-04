@@ -1,15 +1,20 @@
-from kingadmin import admin_base
+from kingadmin.admin_base import AdminBase
 
 class Recoder(object):
     def __init__(self):
         self.enble_admin={}
         self.model=None
-    def register(self,class_model):
+    def register(self,class_model,class_admin=None):
         app_name=class_model._meta.app_label
         model_name=class_model._meta.model_name
-        self.model=class_model
+
+        if not class_admin:
+            class_admin=AdminBase
+
+        class_admin.model=class_model
+
         if app_name not in self.enble_admin:
             self.enble_admin[app_name]={}
-        self.enble_admin[app_name][model_name]=self.model
+        self.enble_admin[app_name][model_name]=class_admin
 
 site=Recoder()
