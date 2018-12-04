@@ -1,23 +1,33 @@
 {% extends 'index.html' %}
+{% load kingadmin_tags %}
+
 {% block title %}
     {{ app_name }}/{{ table_name }}
 {% endblock %}
 
 {% block dashboard %}
 
+
     <table class="table table-striped">
-    <thead>
-        <tr>
-          <th>name</th>
-        </tr>
-    </thead>
-    {% for val in querset %}
-    <tbody>
-        <tr>
-            <td>{{ val }}</td>
-        </tr>
-    </tbody>
-    {% endfor %}
+        <thead>
+         {% if  class_admin.list_display %}
+            <tr>
+                {% for foo in class_admin.list_display %}
+                    <th>{{ foo }}</th>
+                {% endfor %}
+            {% else %}
+                <th>{{ app_name }}</th>
+            </tr>
+        {% endif %}
+        </thead>
+
+        <tbody>
+        {% for query in querset %}
+            <tr>
+                {% build_display_val query class_admin %}
+            </tr>
+        {% endfor %}
+        </tbody>
     </table>
 
 {% endblock %}

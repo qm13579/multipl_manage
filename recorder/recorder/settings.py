@@ -67,6 +67,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries':{'kingadmin_tag':'kingadmin.templatetags.kingadmin_tags'}
         },
     },
 ]

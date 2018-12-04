@@ -17,6 +17,6 @@ def home(request):
 
 def app_table(request,app_name,table_name):
     class_admin = site.enble_admin[app_name][table_name]
-    print(class_admin)
-    querset=class_admin.objects.all()
+    # print(class_admin)
+    querset=class_admin.model.objects.all()
     return  render(request,'app_table.html',locals())

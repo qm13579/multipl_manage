@@ -112,7 +112,7 @@ class FileStore(models.Model):
     file_addre=models.CharField(max_length=64,default='app01/file/',verbose_name='文件储存地址')
     file_time=models.CharField(max_length=32,verbose_name='文件日期')
     file_format_choices=((0,'xls'),(1,'csv'),(2,'json'),(3,'txt'))
-    file_format=models.SmallIntegerField(default=0,verbose_name='文件格式')
+    file_format=models.SmallIntegerField(choices=file_format_choices,default=0,verbose_name='文件格式')
     file_data_summary=models.BooleanField(default=False,verbose_name='数据汇总')
     def __str__(self):
         return self.file_time
