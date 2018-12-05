@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from app01 import models
 class SummaryAdmin(admin.ModelAdmin):
-    list_display = ('user','lack_count')
+    list_display = ('user','lack_count','file_stores_id')
 
 admin.site.register(models.UserProfile)
 admin.site.register(models.DepartmentGroup)

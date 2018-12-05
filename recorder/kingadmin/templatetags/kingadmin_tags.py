@@ -17,3 +17,18 @@ def build_display_val(query,class_admin):
     else:
         ele='<td>%s</td>'%query
     return mark_safe(ele)
+
+@register.simple_tag
+def build_sort_url(forloop,order):
+    if not order:
+        url=forloop
+    else:
+        if forloop==abs(int(order)):
+            if '-' in order:
+                order=abs(int(order))
+            else:
+                order='-'+order
+            url = order
+        else:
+            url=forloop
+    return url

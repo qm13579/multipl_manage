@@ -13,7 +13,7 @@
          {% if  class_admin.list_display %}
             <tr>
                 {% for foo in class_admin.list_display %}
-                    <th>{{ foo }}</th>
+                    <th><a href="?o={% build_sort_url forloop.counter order %}">{{ foo }}</a></th>
                 {% endfor %}
             {% else %}
                 <th>{{ app_name }}</th>
