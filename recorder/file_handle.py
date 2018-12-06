@@ -58,36 +58,41 @@ def file_check():
     model_times=models.FileStore.objects.all().values('file_time')
     for i in model_times:
         model_fiel.add(i['file_time'])
-    # print(file_list,model_fiel)
-    # print (file_list&model_fiel)
+    # print('差集:',file_list-model_fiel)
+    # print ('交集:',file_list&model_fiel)
     #应该取数据库文件文件列表的差集
-    file_store=False
-    if len(model_fiel&file_list)==0:
-        for file in file_list:
+    difference_set = []
+    if len(file_list-model_fiel)!=0:
+        for file in file_list-model_fiel:
             file_store = {}
+            print(file)
             file_store['val']=file_data(file)
             file_store['date']=file
-        print(file_store)
-        return file_store
-    return file_store
+            difference_set.append(file_store)
+        # print(difference_set)
+        return difference_set
+    return difference_set
 def mode_store():
     #父表录入
-    file_dict=file_check()
-    if file_dict:
+    difference_set=file_check()
+    if difference_set:
         from app01 import models
-        obj=models.FileStore.objects.create(
-            file_time=file_dict['date']
-        )
-        #字表录入
-        task_log=[]
-        for item in file_dict['val']:
-            for j in item['val']:
-                task_log.append(models.Detailed( user=item['name'],file_stores_id_id=obj.id,data=j['index'],detail=j['val']))
-        models.Detailed.objects.bulk_create(task_log)
-        print('数据已入库')
+        for file_dict in difference_set:
+            obj=models.FileStore.objects.create(
+                file_time=file_dict['date']
+            )
+            #字表录入
+            task_log=[]
+            for item in file_dict['val']:
+                for j in item['val']:
+                    task_log.append(models.Detailed( user=item['name'],file_stores_id_id=obj.id,data=j['index'],detail=j['val']))
+            models.Detailed.objects.bulk_create(task_log)
+        print('共计%s组数据已入库'%len(difference_set))
     else:
         print('无新数据')
 if __name__ == '__main__':
     now_time = time.time()
-    file_data('2018-11')
+    # file_data('2018-11')
+    file_check()
+    # mode_store()
     print(time.time() - now_time)
