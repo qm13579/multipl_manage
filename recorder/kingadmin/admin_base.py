@@ -3,7 +3,7 @@
 class AdminBase(object):
     list_display = []
     list_display_links = ()
-    list_filter = ()
+    list_filter = []
     list_select_related = False
     list_per_page = 100
     list_max_show_all = 200

@@ -32,3 +32,15 @@ def build_sort_url(forloop,order):
         else:
             url=forloop
     return url
+
+@register.simple_tag
+def build_filter_val(class_admin,filters):
+
+    start_ele = '<select name="filter">'
+    clomun_filter=class_admin.model._meta.get_field(filters)
+    for clomun in clomun_filter.get_choices():
+        op='<option value=%s>%s</option>'%(clomun[0],clomun[1])
+        start_ele+=op
+    start_ele += '</select>'
+
+    return mark_safe(start_ele)

@@ -4,6 +4,7 @@ from django.contrib import admin
 from app01 import models
 class SummaryAdmin(admin.ModelAdmin):
     list_display = ('user','lack_count','file_stores_id')
+    list_filter = ['user','file_stores_id']
 
 admin.site.register(models.UserProfile)
 admin.site.register(models.DepartmentGroup)
