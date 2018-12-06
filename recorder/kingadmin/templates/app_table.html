@@ -6,10 +6,7 @@
 {% endblock %}
 
 {% block dashboard %}
-    <select >
-        <option value="1">1</option>
-        <option value="2" selected = "selected">2</option>
-    </select>
+   
     {% if class_admin.list_filter %}
         <form method="get">
             {% for list_filter in class_admin.list_filter %}
