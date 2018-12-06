@@ -14,7 +14,7 @@
         <form method="get">
             {% for list_filter in class_admin.list_filter %}
 
-                {% build_filter_val  class_admin list_filter %}
+                {% build_filter_val  class_admin list_filter filter_dict %}
 
             {% endfor %}
             <input type="submit" value="筛选"/>

@@ -28,24 +28,27 @@ def sort_queryset(request,queryset,class_admin):
 
     return queryset,order
 def filter_queryset(request,queryset,class_admin):
-    filter_name=request.GET.get('filter')
+    filter_dict={}
+    for key,val in request.GET.items():
+        print(key,val)
+        if key not in ['o']:
+            if val:
+                filter_dict[key]=val
 
-    print(filter_name)
+    queryset=queryset.filter(**filter_dict)
 
-    return queryset,filter_name
+    return queryset,filter_dict
 
 @login_required
 def app_table(request,app_name,table_name):
 
     class_admin = site.enble_admin[app_name][table_name]
-    print(class_admin.list_filter)
-    print(class_admin.list_display)
-    if  not request.GET.get('filter_name'):
-        queryset=class_admin.model.objects.all()
-    else:
-        #筛选
-        queryset,filter_name=filter_queryset(request,class_admin)
+
+    queryset=class_admin.model.objects.all()
+
     #排序
     queryset,order=sort_queryset(request,queryset,class_admin)
+    #筛选
+    queryset,filter_dict=filter_queryset(request,queryset,class_admin)
 
     return  render(request,'app_table.html',locals())
