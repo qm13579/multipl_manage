@@ -43,7 +43,7 @@ def build_filter_val(class_admin,filters,filter_dict):
         else:choices=''
         start_ele = '<select name="%s">'%filters
         for clomun in clomun_filter.get_choices():
-            print(type(choices), (clomun[0]))
+            # print(type(choices), (clomun[0]))
             if choices==str(clomun[0]):
                 if clomun[0]:
                     op='<option value=%s selected="selected">%s</option>'%(clomun[0],clomun[1])

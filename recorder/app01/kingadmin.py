@@ -6,8 +6,9 @@ from kingadmin.sites import site
 from kingadmin import admin_base
 
 class SummaryAdmin(admin_base.AdminBase):
-    list_display = ['user','lack_count','file_stores_id']
+    list_display = ['id','user','lack_count','file_stores_id']
     list_filter = ['file_stores_id']
+    search_fields = ['id']
 class FileStoreAdmin(admin_base.AdminBase):
     list_display = ['file_addre','file_time','file_format']
 

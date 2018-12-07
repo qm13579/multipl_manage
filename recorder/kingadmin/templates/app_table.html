@@ -6,13 +6,16 @@
 {% endblock %}
 
 {% block dashboard %}
-   
+    {% if class_admin.search_fields %}
+        <form method="get">
+            <input  type="search" name="q" placeholder="{{ class_admin.search_fields.0 }}">
+            <input type="submit" value="search">
+        </form>
+    {% endif %}
     {% if class_admin.list_filter %}
         <form method="get">
             {% for list_filter in class_admin.list_filter %}
-
                 {% build_filter_val  class_admin list_filter filter_dict %}
-
             {% endfor %}
             <input type="submit" value="筛选"/>
         </form>

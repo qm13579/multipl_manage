@@ -17,6 +17,7 @@ def home(request):
 
 
 def sort_queryset(request,queryset,class_admin):
+    '''排序'''
     order=request.GET.get('o')
     # print('---->',v)
     if order:
@@ -28,16 +29,31 @@ def sort_queryset(request,queryset,class_admin):
 
     return queryset,order
 def filter_queryset(request,queryset,class_admin):
+    '''筛选'''
     filter_dict={}
     for key,val in request.GET.items():
         print(key,val)
-        if key not in ['o']:
+        if key not in ['o','q']:
             if val:
                 filter_dict[key]=val
 
     queryset=queryset.filter(**filter_dict)
 
     return queryset,filter_dict
+def seach_queryest(request,queryset,class_admin):
+    q=request.GET.get('q')
+    if q:
+        from django.db.models import Q
+        q1=Q()
+        for search_fields in class_admin.search_fields:
+            q2=Q()
+            q2.connector='OR'
+            q2.children.append((search_fields,q))
+            q1.add(q2,'OR')
+        return queryset.filter(q1)
+
+    else:
+        return queryset
 
 @login_required
 def app_table(request,app_name,table_name):
@@ -50,5 +66,7 @@ def app_table(request,app_name,table_name):
     queryset,order=sort_queryset(request,queryset,class_admin)
     #筛选
     queryset,filter_dict=filter_queryset(request,queryset,class_admin)
+    #搜索
+    queryset=seach_queryest(request,queryset,class_admin)
 
     return  render(request,'app_table.html',locals())
