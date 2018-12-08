@@ -55,3 +55,22 @@ def build_filter_val(class_admin,filters,filter_dict):
         start_ele += '</select>'
 
         return mark_safe(start_ele)
+
+@register.simple_tag
+def build_page(queryset):
+    currrnt_page=queryset.number
+    ele=''
+
+    start_pag = currrnt_page - 3
+    end_pag=currrnt_page+3
+    if start_pag-3 < 0:start_pag=1
+    if end_pag >queryset.paginator.num_pages+1:end_pag=queryset.paginator.num_pages+1
+
+    for i in range(start_pag,end_pag):
+        if i==currrnt_page:
+            pag = '<li class="active"><a href="?page=%s">%s<span class="sr-only"></span></a></li>'%(i,i)
+        else:
+            pag = '<li class=""><a href="?page=%s">%s<span class="sr-only"></span></a></li>'%(i,i)
+        ele+=pag
+
+    return  mark_safe(ele)

@@ -4,6 +4,8 @@ from django.shortcuts import render
 from kingadmin.sites import site
 from kingadmin import app_setup
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.shortcuts import render
 app_setup.kingadmin_auto_discover()
 print (site.enble_admin)
 
@@ -33,7 +35,7 @@ def filter_queryset(request,queryset,class_admin):
     filter_dict={}
     for key,val in request.GET.items():
         print(key,val)
-        if key not in ['o','q']:
+        if key not in ['o','q','page']:
             if val:
                 filter_dict[key]=val
 
@@ -68,5 +70,15 @@ def app_table(request,app_name,table_name):
     queryset,filter_dict=filter_queryset(request,queryset,class_admin)
     #搜索
     queryset=seach_queryest(request,queryset,class_admin)
+    #分页
+
+    paginator = Paginator(queryset, 10)  # Show 10 contacts per page
+    page = request.GET.get('page')
+    try:
+        queryset = paginator.get_page(page)
+    except PageNotAnInteger:
+        queryset = paginator.page(1)
+    except EmptyPage:
+        queryset = paginator.page(paginator.num_pages)
 
     return  render(request,'app_table.html',locals())
