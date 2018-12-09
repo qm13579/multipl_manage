@@ -5,5 +5,6 @@ from kingadmin import views
 urlpatterns = [
     url(r'^$',views.home),
     url(r'^(\w+)/(\w+)$',views.app_table,name='appname'),
+    url(r'^(\w+)/(\w+)/(\d+)/change$',views.table_change,name='change'),
 
 ]

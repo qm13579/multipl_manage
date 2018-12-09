@@ -6,6 +6,7 @@ from kingadmin import app_setup
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import render
+from kingadmin.modelform import create_model_from
 app_setup.kingadmin_auto_discover()
 print (site.enble_admin)
 
@@ -63,7 +64,6 @@ def app_table(request,app_name,table_name):
     class_admin = site.enble_admin[app_name][table_name]
 
     queryset=class_admin.model.objects.all()
-
     #排序
     queryset,order=sort_queryset(request,queryset,class_admin)
     #筛选
@@ -71,7 +71,6 @@ def app_table(request,app_name,table_name):
     #搜索
     queryset=seach_queryest(request,queryset,class_admin)
     #分页
-
     paginator = Paginator(queryset, 10)  # Show 10 contacts per page
     page = request.GET.get('page')
     try:
@@ -82,3 +81,10 @@ def app_table(request,app_name,table_name):
         queryset = paginator.page(paginator.num_pages)
 
     return  render(request,'app_table.html',locals())
+def table_change(request,app_name,table_name,uid):
+
+    class_admin = site.enble_admin[app_name][table_name]
+    obj=class_admin.model.objects.get(id=uid)
+    form=create_model_from(class_admin)
+    form_obj=form(instance=obj)
+    return render(request,'table_change.html',locals())

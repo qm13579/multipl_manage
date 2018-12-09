@@ -3,19 +3,27 @@ from django.utils.safestring import mark_safe
 register=Library()
 
 @register.simple_tag
-def build_display_val(query,class_admin):
+def build_display_val(query,class_admin,app_name,table_name):
     ele=''
+    count=0
     if class_admin.list_display:
         for display in class_admin.list_display:
             filed=class_admin.model._meta.get_field(display)
             if filed.choices:
-                print(display)
-                td='<td>'+getattr(query,'get_%s_display'%display)()+'</td>'
+                if count == 0:
+                    count+=1
+                    td = '<td><a href="/kingadmin/%s/%s%s/change">' +getattr(query, 'get_%s_display' % display)() + '</a></td>'%(app_name,table_name,query.id)
+                else:
+                    td='<td>'+getattr(query,'get_%s_display'%display)()+'</td>'
             else:
-                td='<td>%s</td>'%getattr(query,display)
+                if count == 0:
+                    count+=1
+                    td = '<td><a href="/kingadmin/%s/%s/%s/change">%s</a></td>' % (app_name,table_name,query.id,getattr(query, display))
+                else:
+                    td='<td>%s</td>'%getattr(query,display)
             ele+=td
     else:
-        ele='<td>%s</td>'%query
+        ele='<td><a href="/kingadmin/%s/%s/%s/change">%s</a></td>'%(app_name,table_name,query.id,query)
     return mark_safe(ele)
 
 @register.simple_tag

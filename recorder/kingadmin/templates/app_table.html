@@ -37,7 +37,7 @@
         <tbody>
         {% for query in queryset %}
             <tr>
-                {% build_display_val query class_admin %}
+                {% build_display_val query class_admin app_name table_name %}
             </tr>
         {% endfor %}
         </tbody>
@@ -48,5 +48,4 @@
         {% build_page queryset %}
       </ul>
     </nav>
-
 {% endblock %}
