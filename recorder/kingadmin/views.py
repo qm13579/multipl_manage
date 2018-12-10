@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 
 # Create your views here.
 from kingadmin.sites import site
@@ -82,9 +82,18 @@ def app_table(request,app_name,table_name):
 
     return  render(request,'app_table.html',locals())
 def table_change(request,app_name,table_name,uid):
-
     class_admin = site.enble_admin[app_name][table_name]
     obj=class_admin.model.objects.get(id=uid)
     form=create_model_from(class_admin)
-    form_obj=form(instance=obj)
+    if request.method == 'GET':
+        form_obj=form(instance=obj)
+    else:
+        form_obj=form(instance=obj,data=request.POST)
+        if form_obj.is_valid():
+            form_obj.save()
+            return redirect('/kingadmin/%s/%s'%(app_name,table_name))
     return render(request,'table_change.html',locals())
+
+def table_delete(request,app_name,table_name,uid):
+
+    return render(request,'table_delete.html',locals())

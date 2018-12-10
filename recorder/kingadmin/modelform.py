@@ -11,8 +11,8 @@ def create_model_from(class_admin):
         for filed_name in cls.base_fields:
             filed_obj=cls.base_fields[filed_name]
             filed_obj.widget.attrs.update({'class':'form-control'})
-
         return forms.ModelForm.__new__(cls)
+
     dynamic=type('DynamicModelFrom',(forms.ModelForm,),{'Meta':Meta,'__new__':__new__})
 
     return  dynamic

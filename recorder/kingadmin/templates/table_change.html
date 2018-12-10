@@ -6,5 +6,17 @@
 {% endblock %}
 
 {% block dashboard %}
+    <form method="post">{% csrf_token %}
     {{ form_obj }}
+    <input type="submit" class="btn btn-success"  value="保存">
+    <a class="btn btn-danger pull-right" href="/kingadmin/{{ app_name }}/{{ table_name }}/{{ uid }}/delete">删除</a>
+
+    </form>
+
+
+    {% block extend_js %}
+    <script>
+
+    </script>
+    {% endblock %}
 {% endblock %}
