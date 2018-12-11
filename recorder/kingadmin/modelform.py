@@ -1,7 +1,6 @@
 from django import forms
 
 def create_model_from(class_admin):
-
     class Meta:
         model=class_admin.model
         fields='__all__'

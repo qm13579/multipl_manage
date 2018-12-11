@@ -38,10 +38,11 @@ class UserProfileManager(BaseUserManager):
         )
         # user.is_superuser = True
         user.is_admin=True
+        user.is_superuser=True
         user.save(using=self._db)
         return user
 
-class UserProfile(AbstractBaseUser):
+class UserProfile(AbstractBaseUser,PermissionsMixin):
 
     email = models.EmailField(
         verbose_name='email address',
@@ -52,7 +53,7 @@ class UserProfile(AbstractBaseUser):
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=True)
-
+    is_superuser=models.BooleanField(default=True)
     # host_to_remote_user=models.ManyToManyField('HostToRemoteUser')
     department_groups=models.ForeignKey('DepartmentGroup',blank=True,null=True,on_delete=models.CASCADE)
     role=models.ForeignKey('Role',blank=True,null=True,on_delete=models.CASCADE)
@@ -68,19 +69,27 @@ class UserProfile(AbstractBaseUser):
         # The user is identified by their email address
         return self.email
 
-    def has_perm(self, perm, obj=None):
-        "Does the user have a specific permission?"
-        # Simplest possible answer: Yes, always
-        return True
-
-    def has_module_perms(self, app_label):
-        "Does the user have permissions to view the app `app_label`?"
-        # Simplest possible answer: Yes, always
-        return True
+    # def has_perm(self, perm, obj=None):
+    #     "Does the user have a specific permission?"
+    #     # Simplest possible answer: Yes, always
+    #     return True
+    #
+    # def has_module_perms(self, app_label):
+    #     "Does the user have permissions to view the app `app_label`?"
+    #     # Simplest possible answer: Yes, always
+    #     return True
 
 
     def __str__(self):              # __unicode__ on Python 2
         return self.email
+    class Meta:
+        permissions=(
+            ('app01_table_list','可以查看kingadmin中的所有数据'),
+            ('app01_table_list_view','可以查看kingadmin中每条数据的修改页'),
+            ('app01_table_list_change','可以查看kingadmin中每条数据进行修改'),
+            ('app01_table_list_add_view','可以查看kingadmin中每张表增加页'),
+            ('app01_table_list_add','可以查看kingadmin中的进行数据增加'),
+        )
 
 class Role(models.Model):
     name=models.CharField(max_length=64,unique=True)
