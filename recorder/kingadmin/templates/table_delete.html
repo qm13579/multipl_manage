@@ -6,5 +6,13 @@
 {% endblock %}
 
 {% block dashboard %}
+    <h1>Are you sure?</h1>
+    <h3>Are you sure you want to delete the {{ model_obj }}? All of the following related items will be deleted:</h3>
+    {% build_delete model_obj %}
+    <form method="post">{% csrf_token %}
+    <input type="submit" class="btn btn-danger pull-right" value="删除" />
 
+    <a class="btn btn-success pull-left" href="/kingadmin/{{ app_name }}/{{ table_name }}/{{ uid }}/change">返回</a>
+
+    </form>
 {% endblock %}

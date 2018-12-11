@@ -82,3 +82,21 @@ def build_page(queryset):
         ele+=pag
 
     return  mark_safe(ele)
+
+@register.simple_tag
+def build_delete(model_obj):
+    ele='<ul>'
+    tables=model_obj._meta.related_objects
+    for table in tables:
+        table_name=table.name
+        lookup_key='%s_set'%table_name
+        related_obj=getattr(model_obj,lookup_key).all()
+        ele += '<li>%s<ul>'%table_name
+        if table.get_internal_type() == 'ForeignKey':
+            for i in related_obj:
+                ele += '<li><a href="/kingadmin/%s/%s/%s/change">%s</a></li>'%( i._meta.app_label,
+                                                            i._meta.model_name,
+                                                            i.id,i)
+        ele += '</ul></li>'
+    ele += '</ul>'
+    return mark_safe(ele)

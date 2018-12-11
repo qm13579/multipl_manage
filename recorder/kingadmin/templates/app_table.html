@@ -3,6 +3,8 @@
 
 {% block title %}
     {{ app_name }}/{{ table_name }}
+    <a class="btn btn-success pull-right" href="/kingadmin/{{ app_name }}/{{ table_name }}/add">添加</a>
+
 {% endblock %}
 
 {% block dashboard %}
@@ -48,4 +50,5 @@
         {% build_page queryset %}
       </ul>
     </nav>
+
 {% endblock %}

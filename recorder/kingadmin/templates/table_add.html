@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+{% load kingadmin_tags %}
+
+{% block head %}
+    Add
+{% endblock %}
+
+{% block dashboard %}
+    <form method="post">{% csrf_token %}
+        {{ model_form }}
+        <input type="submit" class="btn btn-success"  value="保存">
+        <a class="btn btn-danger pull-right" href="/kingadmin/{{ app_name }}/{{ table_name }}">返回</a>
+
+    </form>
+{% endblock %}

@@ -95,5 +95,20 @@ def table_change(request,app_name,table_name,uid):
     return render(request,'table_change.html',locals())
 
 def table_delete(request,app_name,table_name,uid):
+    class_admin = site.enble_admin[app_name][table_name]
+    model_obj=class_admin.model.objects.get(id=uid)
+
+    if request.method == 'POST':
+        model_obj.delete()
+        return redirect('/kingadmin/%s/%s'%(app_name,table_name))
 
     return render(request,'table_delete.html',locals())
+def table_add(request,app_name,table_name):
+    class_admin = site.enble_admin[app_name][table_name]
+    model_form=create_model_from(class_admin)
+    if request.method == 'POST':
+        form_obj=model_form(data=request.POST)
+        if form_obj.is_valid():
+            form_obj.save()
+            return redirect('/kingadmin/{app_name}/{table_name}'.format(app_name=app_name,table_name=table_name))
+    return  render(request,'table_add.html',locals())
