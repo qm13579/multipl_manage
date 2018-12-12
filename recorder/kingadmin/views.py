@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-
+from django.urls import resolve
 # Create your views here.
 from kingadmin.sites import site
 from kingadmin import app_setup
@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import render
 from kingadmin.modelform import create_model_from
+from kingadmin.permissions import check_permissions
 app_setup.kingadmin_auto_discover()
 print (site.enble_admin)
 
@@ -58,6 +59,7 @@ def seach_queryest(request,queryset,class_admin):
     else:
         return queryset
 
+@check_permissions
 @login_required
 def app_table(request,app_name,table_name):
 
@@ -81,6 +83,8 @@ def app_table(request,app_name,table_name):
         queryset = paginator.page(paginator.num_pages)
 
     return  render(request,'app_table.html',locals())
+
+@check_permissions
 def table_change(request,app_name,table_name,uid):
     class_admin = site.enble_admin[app_name][table_name]
     obj=class_admin.model.objects.get(id=uid)
@@ -94,6 +98,7 @@ def table_change(request,app_name,table_name,uid):
             return redirect('/kingadmin/%s/%s'%(app_name,table_name))
     return render(request,'table_change.html',locals())
 
+@check_permissions
 def table_delete(request,app_name,table_name,uid):
     class_admin = site.enble_admin[app_name][table_name]
     model_obj=class_admin.model.objects.get(id=uid)
@@ -103,6 +108,8 @@ def table_delete(request,app_name,table_name,uid):
         return redirect('/kingadmin/%s/%s'%(app_name,table_name))
 
     return render(request,'table_delete.html',locals())
+
+@check_permissions
 def table_add(request,app_name,table_name):
     class_admin = site.enble_admin[app_name][table_name]
     model_form=create_model_from(class_admin)

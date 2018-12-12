@@ -90,7 +90,11 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
             ('app01_table_list_add_view','可以查看kingadmin中每张表增加页'),
             ('app01_table_list_add','可以查看kingadmin中的进行数据增加'),
         )
-
+    # 'app01_table_list':['index','GET',[] ,{} ],
+    # 'app01_table_list_view':['appname','GET',[] ,{}],
+    # 'app01_table_list_change':['change','POST',[],{} ],
+    # 'app01_table_list_add_view':['add','GET',[],{} ],
+    # 'app01_table_list_add':['add','POST',[] ,{} ]
 class Role(models.Model):
     name=models.CharField(max_length=64,unique=True)
     menus=models.ManyToManyField('Menus',blank=True)

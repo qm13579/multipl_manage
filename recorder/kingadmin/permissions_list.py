@@ -6,5 +6,6 @@ Permission_dict={
     'app01_table_list_change':['change','POST',[],{} ],
     'app01_table_list_add_view':['add','GET',[],{} ],
     'app01_table_list_add':['add','POST',[] ,{} ]
+
 }
 
