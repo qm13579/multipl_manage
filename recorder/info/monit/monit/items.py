@@ -8,7 +8,12 @@
 import scrapy
 
 
-class InfoItem(scrapy.Item):
+class MonitItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     pass
+
+class EuropaItem(scrapy.Item):
+    title=scrapy.Field()
+    href=scrapy.Field()
+    md5=scrapy.Field()

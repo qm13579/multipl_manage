@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for info project
+# Scrapy settings for monit project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,14 +9,14 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'info'
+BOT_NAME = 'monit'
 
-SPIDER_MODULES = ['info.spiders']
-NEWSPIDER_MODULE = 'info.spiders'
+SPIDER_MODULES = ['monit.spiders']
+NEWSPIDER_MODULE = 'monit.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'info (+http://www.yourdomain.com)'
+#USER_AGENT = 'monit (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -47,13 +47,13 @@ ROBOTSTXT_OBEY = True
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'info.middlewares.InfoSpiderMiddleware': 543,
+#    'monit.middlewares.MonitSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'info.middlewares.InfoDownloaderMiddleware': 543,
+#    'monit.middlewares.MonitDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -64,9 +64,10 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'info.pipelines.InfoPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   # 'monit.pipelines.MonitPipeline': 300,
+   'monit.pipelines.EuropaPipline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
