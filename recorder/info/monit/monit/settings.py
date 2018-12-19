@@ -14,7 +14,7 @@ import sys
 
 from django.core.wsgi import get_wsgi_application
 
-DJANGO_PROJECT_PATH = r'C:\Users\BH\Desktop\multipl_manage\recorder'
+DJANGO_PROJECT_PATH = r'C:\root\dev\multipl_manage\recorder'
 DJANGO_SETTINGS_MODULE = 'recorder.settings'
 
 sys.path.insert(0, DJANGO_PROJECT_PATH)

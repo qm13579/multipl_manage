@@ -6,14 +6,16 @@
 # https://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-
+from info.models import WebInfo
+from scrapy_djangoitem import DjangoItem
 
 class MonitItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     pass
 
-class EuropaItem(scrapy.Item):
-    title=scrapy.Field()
-    href=scrapy.Field()
-    md5=scrapy.Field()
+class EuropaItem(DjangoItem):
+    # title=scrapy.Field()
+    # url=scrapy.Field()
+    # md5=scrapy.Field()
+    django_model = WebInfo

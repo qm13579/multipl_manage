@@ -14,13 +14,10 @@ class EurSpider(scrapy.Spider):
     def parse(self, response):
         item_list = self.pdf_info(response=response)
         for item_dict in item_list:
-            item_obj = EuropaItem(
-
-                title=item_dict['title'],
-                href=item_dict['href'],
-                md5=item_dict['md5']
-            )
-
+            item_obj = EuropaItem()
+            item_obj['title']=item_dict['title']
+            item_obj['url']=item_dict['href']
+            item_obj['md5']=item_dict['md5']
             yield item_obj
             # 持久化url
             # content = Selector(response=response).xpath('//a/@href').extract()
@@ -30,7 +27,6 @@ class EurSpider(scrapy.Spider):
             #     elif url[1] == '/':continue
             #     url=self.start_urls[0]+url
             #     yield Request(url=url,callback=self.parse)
-
     def md5(self, url):
         import hashlib
         obj = hashlib.md5()
