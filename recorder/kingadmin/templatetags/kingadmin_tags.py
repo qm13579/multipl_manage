@@ -100,3 +100,5 @@ def build_delete(model_obj):
         ele += '</ul></li>'
     ele += '</ul>'
     return mark_safe(ele)
+
+# def info_list()

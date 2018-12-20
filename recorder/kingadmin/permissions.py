@@ -49,13 +49,14 @@ def per(*args,**kwargs):
         '''app01_table_list'''
         app_name,*per_name=match_key.split('_')
         perm_obj='%s.%s' % (app_name,match_key)
-        print('perm_obj:',perm_obj,request.user)
+        print('perm_obj:',perm_obj,request.user,'--->',request.user.has_perm(perm_obj))
         if request.user.has_perm(perm_obj):
+            print('用户有此权限')
             return True
         else:
             return False
     else:
-        return False
+        print('未检测到用户权限')
 def check_permissions(func):
     '''检查权限'''
     def inner(*args,**kwargs):
