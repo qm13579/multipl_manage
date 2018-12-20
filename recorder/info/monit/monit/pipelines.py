@@ -10,9 +10,5 @@ class MonitPipeline(object):
         return item
 
 class EuropaPipline(object):
-    task_lists=[]
-
     def process_item(self,item,spider):
-        # pass
-        # print(item['title'],item['md5'])
         item.save()

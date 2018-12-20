@@ -5,28 +5,36 @@ from scrapy.http import Request
 import re
 import sys,io
 from ..items import EuropaItem
+from info.models import WebInfo,UrlInfo
+from urllib import parse
 
 class EurSpider(scrapy.Spider):
     name = 'eur'
     allowed_domains = ['ecb.europa.eu']
-    start_urls = ['https://www.ecb.europa.eu/']
-    url_set=set()
+    start_urls = []
+    for obj in UrlInfo.objects.all():
+        start_urls.append(obj.base_url)
+    url_set = set()
+    for obj in WebInfo.objects.all():
+        url_set.add(obj.md5)
     def parse(self, response):
+        print('--------->',response.url)
         item_list = self.pdf_info(response=response)
-        for item_dict in item_list:
-            item_obj = EuropaItem()
-            item_obj['title']=item_dict['title']
-            item_obj['url']=item_dict['href']
-            item_obj['md5']=item_dict['md5']
-            yield item_obj
-            # 持久化url
-            # content = Selector(response=response).xpath('//a/@href').extract()
-            # for url in content:
-            #     if len(url) < 2 :continue
-            #     elif  not url.startswith('/') : continue
-            #     elif url[1] == '/':continue
-            #     url=self.start_urls[0]+url
-            #     yield Request(url=url,callback=self.parse)
+        # for item_dict in item_list:
+        #     item_obj = EuropaItem(
+        #         title=item_dict['title'],
+        #         url=item_dict['href'],
+        #         md5=item_dict['md5']
+        #     )
+        #     yield item_obj
+        #     持久化url
+        content = Selector(response=response).xpath('//a/@href').extract()
+        for url in content:
+            if len(url) < 2 :continue
+            elif  not url.startswith('/') : continue
+            elif url[1] == '/':continue
+            url=parse.urljoin(response.url,url)
+            yield Request(url=url,callback=self.parse)
     def md5(self, url):
         import hashlib
         obj = hashlib.md5()
