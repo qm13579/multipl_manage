@@ -9,5 +9,27 @@
     {% for foo in admin %}
         <li><a href="{{ foo.url }}"> {{ foo.title }} </a></li>
     {% endfor %}
+    <table class="table table-striped">
+        <thead >
+            <tr>
+                <th>title</th>
+                <th>keyword</th>
+                <th>date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for foo in queryset %}
+                <tr>
+                    {% build_webinfo foo %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <nav aria-label="...">
+      <ul class="pagination">
+        {% build_page queryset %}
+      </ul>
+    </nav>
 
 {% endblock %}

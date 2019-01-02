@@ -9,6 +9,8 @@ from info.models import WebInfo,UrlInfo
 from urllib import parse
 import sys, io,json
 import requests
+import jieba.analyse
+
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='gb18030')
 
 class EurSpider(scrapy.Spider):
@@ -20,16 +22,22 @@ class EurSpider(scrapy.Spider):
     url_set = set()
     for obj in WebInfo.objects.all():
         url_set.add(obj.md5)
+
     def parse(self, response):
         item_list = self.pdf_info(response=response)
-        # for item_dict in item_list:
-        #     item_obj = EuropaItem(
-        #         title=item_dict['title'],
-        #         url=item_dict['href'],
-        #         md5=item_dict['md5']
-        #     )
-        #     yield item_obj
-        #     持久化url
+        for item_dict in item_list:
+            item_obj = EuropaItem(
+                title=item_dict['title'],
+                url=item_dict['href'],
+                md5=item_dict['md5'],
+                keyword_1=item_dict['keyword'][0],
+                keyword_2=item_dict['keyword'][1],
+                keyword_3=item_dict['keyword'][2],
+                keyword_4=item_dict['keyword'][3],
+                keyword_5=item_dict['keyword'][4],
+            )
+            yield item_obj
+        #     持久化url.
         content = Selector(response=response).xpath('//a/@href').extract()
         for url in content:
             if len(url) < 2 :continue
@@ -37,6 +45,7 @@ class EurSpider(scrapy.Spider):
             elif url[1] == '/':continue
             url=parse.urljoin(response.url,url)
             yield Request(url=url,callback=self.parse)
+
     def md5(self, url):
         obj = hashlib.md5()
         obj.update(bytes(url, encoding='utf-8'))
@@ -65,6 +74,7 @@ class EurSpider(scrapy.Spider):
                         item_dict['title'] = text
                         item_dict['href'] = href
                         item_dict['md5'] = self.md5(url)
+                        item_dict['keyword'] = self.participle(text)
                         item_list.append(item_dict)
                         # print(item_dict)
         return item_list
@@ -90,9 +100,17 @@ class EurSpider(scrapy.Spider):
         session.headers['Content-Type'] = 'application/x-www-form-urlencoded'
         response = session.get(url, params=param)
         rsp = json.loads(response.text)
-        return rsp['trans_result'][0]['dst']
+        text=rsp['trans_result'][0]['dst']
+        msg_list=self.participle(text)
+        if len(msg_list)<5:
+            for i in range(5-len(msg_list)):
+                msg_list.append(None)
+        return msg_list
+
     def participle(self,content):
-        '''采用结巴精确模式进行分词'''
-        import jieba
-        seg_list=jieba.cut(content)
-        return seg_list
+        '''采用结巴关键词模式进行分词'''
+        msg_list=jieba.analyse.extract_tags(content,topK=5)
+        if len(msg_list)<5:
+            for i in range(5-len(msg_list)):
+                msg_list.append( '')
+        return msg_list
