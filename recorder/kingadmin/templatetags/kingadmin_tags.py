@@ -106,8 +106,8 @@ def build_delete(model_obj):
 def build_webinfo(query):
 
     title=query.title
-    # keyword=';'.join([query.keyword_1,query.keyword_2,query.keyword_3,query.keyword_4,query.keyword_5])
-    keyword=';'
+    keyword=';'.join([query.keyword_1,query.keyword_2,query.keyword_3,query.keyword_4,query.keyword_5])
+    # keyword=';'
     url=query.url
     date=query.date
     td='<td><a href="%s">%s</a></td><td>%s</td><td>%s</td>'%(url,title,keyword,date)
