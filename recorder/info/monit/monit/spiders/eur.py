@@ -20,25 +20,30 @@ class EurSpider(scrapy.Spider):
         url_set.add(i)
     item_list = []
     def parse(self, response):
-        print(response.url)
+        # print(response.url)
         item_list = self.pdf_info(response=response)
-        print('---->')
+        # print('---->')
         for item_dict in item_list:
-            print(item_dict)
-        #     item_obj = EuropaItem()
-        #     item_obj['title']=item_dict['title']
-        #     item_obj['url']=item_dict['href']
-        #     item_obj['md5']=item_dict['md5']
-        #     yield item_obj
+            # 数据持久化
+            if  item_dict['title'] =='ENGLISH' : continue
+            # print(item_dict)
+            item_obj = EuropaItem()
+            item_obj['title']=item_dict['title']
+            item_obj['url']=item_dict['href']
+            item_obj['md5']=item_dict['md5']
+            if  item_obj['title'] =='ENGLISH' : continue
+            yield item_obj
+
             # 持久化url
-            content = Selector(response=response).xpath('//a/@href').extract()
-            for url in content:
-                if len(url) < 2 :continue
-                elif  not url.startswith('/') : continue
-                elif url[1] == '/':continue
-                url=self.start_urls[0]+url
-                # yield Request(url=url,callback=self.parse)
-                yield Request(url=parse.urljoin(response.url,url),callback=self.parse)
+            # content = Selector(response=response).xpath('//a/@href').extract()
+            # for url in content:
+            #     if len(url) < 2 :continue
+            #     elif  not url.startswith('/') : continue
+            #     elif url[1] == '/':continue
+            #     url=self.start_urls[0]+url
+            #     # yield Request(url=url,callback=self.parse)
+            #     yield Request(url=parse.urljoin(response.url,url),callback=self.parse)
+
     def md5(self, url):
         import hashlib
         obj = hashlib.md5()
