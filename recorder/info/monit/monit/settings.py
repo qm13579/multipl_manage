@@ -19,7 +19,6 @@ DJANGO_PROJECT_PATH = r'C:\Users\BH\Desktop\multipl_manage\recorder'
 
 DJANGO_SETTINGS_MODULE = 'recorder.settings'
 # DJANGO_PROJECT_PATH = r'/usr/project/multipl_manage/recorder/'
-
 sys.path.insert(0, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 application = get_wsgi_application()

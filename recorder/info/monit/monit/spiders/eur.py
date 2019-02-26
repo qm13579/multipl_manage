@@ -6,6 +6,7 @@ import re
 import hashlib
 from ..items import EuropaItem
 from info.models import WebInfo,UrlInfo
+# from ....models import WebInfo,UrlInfo
 from urllib import parse
 import sys, io,json
 import requests
@@ -13,7 +14,6 @@ import jieba.analyse
 
 import sys, io
 from urllib import parse
-from info.models import WebInfo
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='gb18030')
 
@@ -21,18 +21,14 @@ class EurSpider(scrapy.Spider):
     name = 'eur'
     allowed_domains = ['ecb.europa.eu']
     start_urls = []
-    for obj in UrlInfo.objects.all():
-        start_urls.append(obj.base_url)
-    url_set = set()
-    for obj in WebInfo.objects.all():
-        url_set.add(obj.md5)
+    # for obj in UrlInfo.objects.all():
+    #     start_urls.append(obj.base_url)
 
-    # start_urls = ['https://www.ecb.europa.eu/','http://www.treasury.gov.za']
+    url_set = set()
+    # for obj in WebInfo.objects.all():
+    #     url_set.add(obj.md5)
+
     start_urls = ['https://www.ecb.europa.eu/','http://www.treasury.gov.za']
-    url_set=set()
-    for i in WebInfo.objects.all():
-        url_set.add(i)
-    item_list = []
 
     def parse(self, response):
         item_list = self.pdf_info(response=response)
