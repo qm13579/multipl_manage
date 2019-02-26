@@ -48,7 +48,7 @@ class EurSpider(scrapy.Spider):
                 keyword_5=item_dict['keyword'][4],
             )
             if  item_obj['title'] =='ENGLISH' : continue
-            yield item_obj
+            # yield item_obj
             # 持久化url
             # content = Selector(response=response).xpath('//a/@href').extract()
             # for url in content:
@@ -91,7 +91,6 @@ class EurSpider(scrapy.Spider):
                         item_dict['md5'] = self.md5(url)
                         item_dict['keyword'] = self.participle(text)
                         item_list.append(item_dict)
-                        # print(item_dict)
         return item_list
 
     def translation(self,content):
@@ -116,21 +115,21 @@ class EurSpider(scrapy.Spider):
         response = session.get(url, params=param)
         rsp = json.loads(response.text)
         text=rsp['trans_result'][0]['dst']
+
         msg_list=self.participle(text)
         if len(msg_list)<5:
             for i in range(5-len(msg_list)):
                 msg_list.append(None)
+
         return msg_list
 
     def participle(self,content):
-        '''采用结巴关键词模式进行分词'''
+        '''采用结巴关键词模式进行分词,返回关键词列表'''
         msg_list=jieba.analyse.extract_tags(content,topK=5)
         if len(msg_list)<5:
             for i in range(5-len(msg_list)):
                 msg_list.append( '')
         return msg_list
-                self.item_list.append(item_dict)
-        return self.item_list
 
     def match_url(self,response_url,url):
         import re
