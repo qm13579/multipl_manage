@@ -35,9 +35,7 @@ class EurSpider(scrapy.Spider):
     item_list = []
 
     def parse(self, response):
-        # print(response.url)
         item_list = self.pdf_info(response=response)
-        # print('---->')
         for item_dict in item_list:
             item_obj = EuropaItem(
                 title=item_dict['title'],
@@ -49,25 +47,8 @@ class EurSpider(scrapy.Spider):
                 keyword_4=item_dict['keyword'][3],
                 keyword_5=item_dict['keyword'][4],
             )
-            yield item_obj
-        #     持久化url.
-        content = Selector(response=response).xpath('//a/@href').extract()
-        for url in content:
-            if len(url) < 2 :continue
-            elif  not url.startswith('/') : continue
-            elif url[1] == '/':continue
-            url=parse.urljoin(response.url,url)
-            yield Request(url=url,callback=self.parse)
-            # 数据持久化
-            if  item_dict['title'] =='ENGLISH' : continue
-            # print(item_dict)
-            item_obj = EuropaItem()
-            item_obj['title']=item_dict['title']
-            item_obj['url']=item_dict['href']
-            item_obj['md5']=item_dict['md5']
             if  item_obj['title'] =='ENGLISH' : continue
             yield item_obj
-
             # 持久化url
             # content = Selector(response=response).xpath('//a/@href').extract()
             # for url in content:
