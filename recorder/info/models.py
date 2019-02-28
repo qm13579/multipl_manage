@@ -19,6 +19,6 @@ class WebInfo(models.Model):
 
 class UrlInfo(models.Model):
     base_url=models.CharField(max_length=128,verbose_name='根')
-    key=models.CharField(max_length=248,verbose_name='提取关键词')
+    key=models.CharField(max_length=248,null=True,blank=True,verbose_name='提取关键词')
     def __str__(self):
         return self.base_url

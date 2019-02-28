@@ -6,14 +6,17 @@
 {% endblock %}
 {% block dashboard %}
     <h1 id="i1">信息监测1.0</h1>
-    <form method="get">
-        <input type="submit" value="搜索">
+    <form class="form-inline" method="get">
+        <input type="submit" class="btn btn-info" value="搜索">
         {% if search %}
-            <input type="search" name="s" placeholder="{{ search }}">
+            <input type="search"  class="form-control" name="s" placeholder="{{ search }}">
         {% else %}
-            <input type="search" name="s" placeholder="关键词">
+            <input type="search" name="s" class="form-control" placeholder="关键词">
         {% endif %}
     </form>
+
+    <a class="btn btn-primary pull-right" href="info">查看网址列表</a>
+
     {% for foo in admin %}
         <li><a href="{{ foo.url }}"> {{ foo.title }} </a></li>
     {% endfor %}

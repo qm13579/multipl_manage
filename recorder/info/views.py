@@ -40,3 +40,9 @@ def scrapy_info(request):
     time_stamp=time.localtime()
     current_time=time.strftime('%Y-%m-%d',time.localtime(time.time()))
     return render(request,'scrapy/ScrapyInfo.html',locals())
+
+def scrapy_url_info(request):
+    from info import models
+    queryset=models.UrlInfo.objects.all()
+    #把实例传入前端，进行 # 增删改查
+    return render(request,'scrapy/ScrapyUrl.html',locals())
