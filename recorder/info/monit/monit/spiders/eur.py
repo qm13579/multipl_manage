@@ -25,10 +25,10 @@ class EurSpider(scrapy.Spider):
     #     start_urls.append(obj.base_url)
 
     url_set = set()
-    # for obj in WebInfo.objects.all():
-    #     url_set.add(obj.md5)
+    for obj in WebInfo.objects.all():
+        url_set.add(obj.md5)
 
-    start_urls = ['https://www.ecb.europa.eu/','http://www.treasury.gov.za']
+    start_urls = ['https://www.ecb.europa.eu/','http://www.treasury.gov.za','http://www.ft.com']
 
     def parse(self, response):
         item_list = self.pdf_info(response=response)
@@ -44,7 +44,8 @@ class EurSpider(scrapy.Spider):
                 keyword_5=item_dict['keyword'][4],
             )
             if  item_obj['title'] =='ENGLISH' : continue
-            # yield item_obj
+            print('---->',item_dict['title'])
+            yield item_obj
             # 持久化url
             # content = Selector(response=response).xpath('//a/@href').extract()
             # for url in content:
@@ -61,7 +62,7 @@ class EurSpider(scrapy.Spider):
         return obj.hexdigest()
 
     def pdf_info(self, response):
-        '''获取pdf信息并持久化'''
+        '''解析网页获取url，将信息封装成字典并返回'''
         content = Selector(response=response).xpath('//a')
         item_list = []
         for i in self.start_urls:

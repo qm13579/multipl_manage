@@ -5,7 +5,15 @@
     SCRAPY
 {% endblock %}
 {% block dashboard %}
-    <h1>scrapy</h1>
+    <h1 id="i1">信息监测1.0</h1>
+    <form method="get">
+        <input type="submit" value="搜索">
+        {% if search %}
+            <input type="search" name="s" placeholder="{{ search }}">
+        {% else %}
+            <input type="search" name="s" placeholder="关键词">
+        {% endif %}
+    </form>
     {% for foo in admin %}
         <li><a href="{{ foo.url }}"> {{ foo.title }} </a></li>
     {% endfor %}
@@ -31,5 +39,21 @@
         {% build_page queryset %}
       </ul>
     </nav>
-
+{% endblock %}
+{% block extend_js %}
+    <script>
+        $(function () {
+            checkout();
+        });
+        function checkout() {
+            var tr=$('tbody').children();
+            $(tr).each(function () {
+                var td=$(this).children().last();
+                var content=$(td).text();
+                if('{{ current_time }}' ==  content.substring(0,10)){
+                $(td).append('  <span style="color: red">CurrentTime</span>')
+            };
+            });
+        };
+    </script>
 {% endblock %}
