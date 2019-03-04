@@ -21,14 +21,14 @@ class EurSpider(scrapy.Spider):
     name = 'eur'
     allowed_domains = ['ecb.europa.eu']
     start_urls = []
-    # for obj in UrlInfo.objects.all():
-    #     start_urls.append(obj.base_url)
+    for obj in UrlInfo.objects.all():
+        start_urls.append(obj.base_url)
 
     url_set = set()
     for obj in WebInfo.objects.all():
         url_set.add(obj.md5)
 
-    start_urls = ['https://www.ecb.europa.eu/','http://www.treasury.gov.za','http://www.ft.com']
+    # start_urls = ['https://www.ecb.europa.eu/','http://www.treasury.gov.za','http://www.ft.com']
 
     def parse(self, response):
         item_list = self.pdf_info(response=response)
@@ -37,6 +37,7 @@ class EurSpider(scrapy.Spider):
                 title=item_dict['title'],
                 url=item_dict['href'],
                 md5=item_dict['md5'],
+                base_url=item_dict['base_url_id'],
                 keyword_1=item_dict['keyword'][0],
                 keyword_2=item_dict['keyword'][1],
                 keyword_3=item_dict['keyword'][2],
@@ -79,13 +80,15 @@ class EurSpider(scrapy.Spider):
                         continue
                     else:
                         self.url_set.add(self.md5(url))
-                        href = base_url + url
+                        # href = base_url + url
                         # href = response.url + url
                         href = self.match_url(response.url,url)
+                        base_url_id=self.match_url(response.url,url,base_url_id=True)
                         item_dict = {}
                         item_dict['title'] = text
                         item_dict['href'] = href
                         item_dict['md5'] = self.md5(url)
+                        item_dict['base_url_id'] = base_url_id
                         item_dict['keyword'] = self.participle(text)
                         item_list.append(item_dict)
         return item_list
@@ -128,8 +131,12 @@ class EurSpider(scrapy.Spider):
                 msg_list.append( '')
         return msg_list
 
-    def match_url(self,response_url,url):
-        import re
-        for base_url in self.start_urls:
-            if re.findall('.*%s.*'%base_url,response_url):
-                return base_url+url
+    def match_url(self,response_url,url,base_url_id=False):
+        if not base_url_id:
+            for base_url in self.start_urls:
+                if re.findall('.*%s.*'%base_url,response_url):
+                    return base_url+url
+        else:
+            for query in UrlInfo.objects.all():
+                if re.findall('.*%s.*' % query.base_url, response_url):
+                    return query
