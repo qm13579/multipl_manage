@@ -4,7 +4,10 @@ from kingadmin.permissions_list import Permission_dict
 from django.conf import settings
 
 def per(*args,**kwargs):
-    '''权限控制'''
+    '''
+    权限控制,获取本地权限列表,
+    对比请求链接name,请求方式,
+    '''
     request=args[0]
     resolve_url_obj=resolve(request.path)
     resolve_url_name=resolve_url_obj.url_name

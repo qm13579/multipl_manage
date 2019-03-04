@@ -110,6 +110,10 @@ def build_webinfo(query):
     # keyword=';'
     url=query.url
     date=query.date
-    td='<td><a href="%s">%s</a></td><td>%s</td><td>%s</td>'%(url,title,keyword,date)
+    if query.base_url:
+        url_key=query.base_url.key
+    else:
+        url_key='None'
+    td='<td><a href="%s">%s</a></td><td>%s</td><td>%s</td><td>%s</td>'%(url,title,keyword,date,url_key)
 
     return mark_safe(td)
