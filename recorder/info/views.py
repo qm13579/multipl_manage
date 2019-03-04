@@ -39,6 +39,7 @@ def scrapy_info(request):
     import time
     time_stamp=time.localtime()
     current_time=time.strftime('%Y-%m-%d',time.localtime(time.time()))
+    print('current:',current_time)
     return render(request,'scrapy/ScrapyInfo.html',locals())
 
 def scrapy_url_info(request):
