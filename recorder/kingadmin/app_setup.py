@@ -10,4 +10,3 @@ def kingadmin_auto_discover():
             print('%s.kingadmin'%apps)
         except Exception as e:
             pass
-
