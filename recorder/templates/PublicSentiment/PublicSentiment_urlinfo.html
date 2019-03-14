@@ -1,0 +1,30 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    监测网址信息
+{% endblock %}
+{% block dashboard %}
+    <a class="btn btn-success pull-right" href="/kingadmin/publicsentiment/urlinfo/add">添加</a>
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>url</th>
+                <th>修改</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for query in queryset %}
+                <tr>
+                    <td>{{ query.id }}</td>
+                    <td>{{ query.key }}</td>
+                    <td>{{ query.base_url }}</td>
+                    <td><a href="/kingadmin/info/urlinfo/{{ query.id }}/change">change</a></td>
+                </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}

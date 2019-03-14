@@ -2,7 +2,6 @@ import django
 django.setup()
 
 from info import models
-
 from kingadmin.sites import site
 from kingadmin import admin_base
 

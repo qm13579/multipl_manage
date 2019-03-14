@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'app01',
     'kingadmin',
     'info',
-    'publicSebtiment',
+    'publicsentiment',
 ]
 
 MIDDLEWARE = [

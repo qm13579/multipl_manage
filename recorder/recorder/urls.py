@@ -21,7 +21,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^home/',include('app01.urls')),
     url(r'^scrapy/',include('info.urls')),
-    url(r'^publicsentiment/',include('publicSebtiment.urls')),
+    url(r'^publicsentiment/', include('publicsentiment.urls')),
     url(r'^kingadmin/',include('kingadmin.urls')),
     url(r'^login/$',views.acc_login),
     url(r'^logout/$',views.acc_logout,name='logout'),
