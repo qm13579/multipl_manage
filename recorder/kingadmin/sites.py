@@ -1,3 +1,4 @@
+
 from kingadmin.admin_base import AdminBase
 
 class Recoder(object):
@@ -9,8 +10,7 @@ class Recoder(object):
         model_name=class_model._meta.model_name
 
         if not class_admin:
-            class_admin=AdminBase
-
+            class_admin=AdminBase()
         class_admin.model=class_model
 
         if app_name not in self.enble_admin:

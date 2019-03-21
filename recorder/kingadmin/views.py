@@ -112,6 +112,7 @@ def table_delete(request,app_name,table_name,uid):
 @check_permissions
 def table_add(request,app_name,table_name):
     class_admin = site.enble_admin[app_name][table_name]
+    print(app_name,table_name)
     model_form=create_model_from(class_admin)
     if request.method == 'POST':
         form_obj=model_form(data=request.POST)

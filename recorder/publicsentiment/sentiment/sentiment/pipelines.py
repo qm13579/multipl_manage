@@ -9,3 +9,7 @@
 class SentimentPipeline(object):
     def process_item(self, item, spider):
         return item
+
+class NewsPipline(object):
+    def process_item(self,item,spider):
+        item.save()

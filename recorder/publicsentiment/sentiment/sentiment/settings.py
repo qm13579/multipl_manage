@@ -9,6 +9,20 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
+import os
+import sys
+
+from django.core.wsgi import get_wsgi_application
+
+#DJANGO_PROJECT_PATH = r'C:\root\dev\multipl_manage\recorder'
+DJANGO_PROJECT_PATH = r'C:\Users\BH\Desktop\multipl_manage\recorder'
+
+DJANGO_SETTINGS_MODULE = 'recorder.settings'
+# DJANGO_PROJECT_PATH = r'/usr/project/multipl_manage/recorder/'
+sys.path.insert(0, DJANGO_PROJECT_PATH)
+os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
+application = get_wsgi_application()
+
 BOT_NAME = 'sentiment'
 
 SPIDER_MODULES = ['sentiment.spiders']
@@ -64,9 +78,10 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'sentiment.pipelines.SentimentPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'sentiment.pipelines.SentimentPipeline': 300,
+    'sentiment.pipelines.NewsPipline':300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
