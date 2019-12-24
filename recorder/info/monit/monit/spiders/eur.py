@@ -1,19 +1,15 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from scrapy.selector import Selector,HtmlXPathSelector
-from scrapy.http import Request
+from scrapy.selector import Selector
 import re
 import hashlib
 from ..items import EuropaItem
 from info.models import WebInfo,UrlInfo
-# from ....models import WebInfo,UrlInfo
-from urllib import parse
 import sys, io,json
 import requests
 import jieba.analyse
 
 import sys, io
-from urllib import parse
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='gb18030')
 
