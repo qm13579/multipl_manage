@@ -16,9 +16,9 @@ from django.core.wsgi import get_wsgi_application
 
 #DJANGO_PROJECT_PATH = r'C:\root\dev\multipl_manage\recorder'
 #DJANGO_PROJECT_PATH = r'C:\Users\BH\Desktop\multipl_manage\recorder'
-
+DJANGO_PROJECT_PATH = 'D:\\project\\recoder\\multipl_manage\\recorder'
 DJANGO_SETTINGS_MODULE = 'recorder.settings'
-DJANGO_PROJECT_PATH = r'/usr/project/recorder/multipl_manage/recorder/'
+# DJANGO_PROJECT_PATH = r'/usr/project/recorder/multipl_manage/recorder/'
 sys.path.insert(0, DJANGO_PROJECT_PATH)
 os.environ['DJANGO_SETTINGS_MODULE'] = DJANGO_SETTINGS_MODULE
 application = get_wsgi_application()

@@ -8,24 +8,20 @@ from info.models import WebInfo,UrlInfo
 import sys, io,json
 import requests
 import jieba.analyse
-
 import sys, io
-
+from info.removal import SpiderRemoval
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='gb18030')
 
 class EurSpider(scrapy.Spider):
     name = 'eur'
     allowed_domains = ['ecb.europa.eu']
-    start_urls = []
-    for obj in UrlInfo.objects.all():
-        start_urls.append(obj.base_url)
+    start_urls = ["https://www.ecb.europa.eu/"]
+    #根据URL查找已经收录的网页链接
+    print("start_url:",start_urls)
+    sr = SpiderRemoval()
+    url_set = sr.urlSet(start_urls)
 
-    url_set = set()
-    for obj in WebInfo.objects.all():
-        url_set.add(obj.md5)
-
-    # start_urls = ['https://www.ecb.europa.eu/','http://www.treasury.gov.za','http://www.ft.com']
-
+    #主函数区
     def parse(self, response):
         item_list = self.pdf_info(response=response)
         for item_dict in item_list:
@@ -52,16 +48,12 @@ class EurSpider(scrapy.Spider):
             #     url=self.start_urls[0]+url
             #     # yield Request(url=url,callback=self.parse)
             #     yield Request(url=parse.urljoin(response.url,url),callback=self.parse)
-
-    def md5(self, url):
-        obj = hashlib.md5()
-        obj.update(bytes(url, encoding='utf-8'))
-        return obj.hexdigest()
-
     def pdf_info(self, response):
+        print("SUCCESS URL:",response.url)
         '''解析网页获取url，将信息封装成字典并返回'''
         content = Selector(response=response).xpath('//a')
         item_list = []
+        #拼接url
         for i in self.start_urls:
             if re.findall('.*%s.*'%i,response.url):
                 base_url=i
@@ -72,18 +64,16 @@ class EurSpider(scrapy.Spider):
             if not text: continue
             if re.findall('.*pdf.*', url):
                 if text.strip():
-                    if self.md5(url) in self.url_set:
+                    if self.sr.MD5(url) in self.url_set:
                         continue
                     else:
-                        self.url_set.add(self.md5(url))
-                        # href = base_url + url
-                        # href = response.url + url
+                        self.url_set.add(self.sr.MD5(url))
                         href = self.match_url(response.url,url)
                         base_url_id=self.match_url(response.url,url,base_url_id=True)
                         item_dict = {}
                         item_dict['title'] = text
                         item_dict['href'] = href
-                        item_dict['md5'] = self.md5(url)
+                        item_dict['md5'] = self.sr.MD5(url)
                         item_dict['base_url_id'] = base_url_id
                         item_dict['keyword'] = self.participle(text)
                         item_list.append(item_dict)
