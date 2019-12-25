@@ -10,20 +10,21 @@ import requests
 import jieba.analyse
 import sys, io
 from info.removal import SpiderRemoval
+from info.analysisSpider import analysisSpider
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='gb18030')
 
 class EurSpider(scrapy.Spider):
     name = 'eur'
     allowed_domains = ['ecb.europa.eu']
     start_urls = ["https://www.ecb.europa.eu/"]
-    #根据URL查找已经收录的网页链接
-    print("start_url:",start_urls)
-    sr = SpiderRemoval()
+    sr = SpiderRemoval()  #根据URL查找已经收录的网页链接
     url_set = sr.urlSet(start_urls)
 
     #主函数区
     def parse(self, response):
         item_list = self.pdf_info(response=response)
+        # analysis = analysisSpider()
+        # item_list = analysis.herfCommonAnalysis(response)
         for item_dict in item_list:
             item_obj = EuropaItem(
                 title=item_dict['title'],

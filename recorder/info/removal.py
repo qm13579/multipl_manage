@@ -19,7 +19,6 @@ class SpiderRemoval:
         :param start_urls:传入spider的star_urls type:list
         :return: urlSet,当前startUrl的所有已存在的MD5
         """
-        print("start_url:", start_urls)
         url_id = UrlInfo.objects.get(base_url=start_urls[0]).id
         url_set = set()
         for obj in WebInfo.objects.filter(base_url=url_id):
